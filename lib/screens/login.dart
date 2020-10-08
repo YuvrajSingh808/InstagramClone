@@ -12,6 +12,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool isTextFieldsFilled = false;
+
+
   @override
   void dispose() {
     emailController.dispose();
@@ -19,15 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    if (emailController.text.isEmpty && passwordController.text.isEmpty) {
-      isTextFieldsFilled = false;
-      print('false');
-    } else
-      isTextFieldsFilled = true;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +37,17 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextFormField(
               controller: emailController,
-              // initialValue: "",
+              onChanged: (value) {
+                if (emailController.text.length > 0 && passwordController.text.length > 0) {
+                  setState(() {
+                    isTextFieldsFilled = true;
+                  });
+                } else{
+                  setState(() {
+                    isTextFieldsFilled = false;
+                  });
+                }
+              },
               decoration: InputDecoration(
                 filled: true,
                 contentPadding:
@@ -62,6 +65,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextFormField(
               obscureText: _obscureText,
+              controller: passwordController,
+              onChanged: (value) {
+                if (emailController.text.length > 0 && passwordController.text.length > 0) {
+                  setState(() {
+                    isTextFieldsFilled = true;
+                  });
+                } else{
+                  setState(() {
+                    isTextFieldsFilled = false;
+                  });
+                }
+              },
               decoration: InputDecoration(
                 filled: true,
                 contentPadding:
@@ -82,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 45,
               child: FlatButton(
                 disabledColor: Colors.blue[100],
-                onPressed: onpress(),
+                onPressed: isTextFieldsFilled ? () {} : null,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -99,14 +114,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-  Function onpress(){
-    if (isTextFieldsFilled) {
-      return (){
-        print('hello');
-      };
-    } else {
-      return null;
-    }
   }
 }
